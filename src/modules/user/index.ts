@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { getUserById, getUsers, postUsers, putUsers } from "./service";
+import { UserService } from "./service";
 
 export const user = new Elysia({ prefix: '/user' })
   .state({
@@ -8,17 +8,17 @@ export const user = new Elysia({ prefix: '/user' })
   })
 
 const userRoutes = new Elysia({ prefix: '/users' })
-  .get("/", () => getUsers(), {
+  .get("/", () => UserService.getUsers(), {
     detail: {
       tags: ['User']
     }
   })
-  .get("/:id", ({ params: { id }}) => getUserById(id), {
+  .get("/:id", ({ params: { id }}) => UserService.getUserById(id), {
     detail: {
       tags: ['User']
     }
   })
-  .post("/", ({ body }) => postUsers(body), {
+  .post("/", ({ body }) => UserService.postUsers(body), {
     detail: {
       tags: ['User']
     },
@@ -29,7 +29,7 @@ const userRoutes = new Elysia({ prefix: '/users' })
       cpf: t.String()
     })
   })
-  .put("/:id", ({ params: { id }, body}) => putUsers(id, body), {
+  .put("/:id", ({ params: { id }, body}) => UserService.putUsers(id, body), {
     detail: {
       tags: ['User']
     },
