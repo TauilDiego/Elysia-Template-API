@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE "Authority" (
 -- CreateTable
 CREATE TABLE "_AuthorityToUser" (
     "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL,
+    "B" TEXT NOT NULL,
 
     CONSTRAINT "_AuthorityToUser_AB_pkey" PRIMARY KEY ("A","B")
 );
