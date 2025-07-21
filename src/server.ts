@@ -3,7 +3,10 @@ import userRoutes from "./modules/user";
 import swagger from "@elysiajs/swagger";
 
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const app = new Elysia({
+  prefix: "/api",
+  normalize: true
+}).get("/", () => "alive").listen(3000);
 
 app
   .use(swagger({
@@ -27,8 +30,5 @@ app
       }
     }
   }))
-  .group("/api", (app) => app.use(userRoutes))
+  .group("/v1", (app) => app.use(userRoutes))
   .listen(process.env.PORT || 3000);
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
