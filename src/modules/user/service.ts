@@ -1,11 +1,15 @@
 import db from "../../utils/db"
 import * as bun from "bun";
-import type { UserModel } from "./model";
+import { UserModel } from "./model";
 
 export abstract class UserService {
   static async getUsers() {
     try {
-      return await db.user.findMany();
+      return await db.user.findMany({
+        omit: {
+          password: true
+        }
+      });
     } catch (e: unknown) {
       console.error(e)
     }
@@ -16,6 +20,9 @@ export abstract class UserService {
       return await db.user.findFirst({
         where: {
           id: id
+        },
+        omit: {
+          password: true
         }
       })
     } catch (e: unknown) {
@@ -23,10 +30,27 @@ export abstract class UserService {
     }
   }
 
-  static async postUsers({ email, password, name, cpf }: UserModel.userCreate) {
-    try {
+  static async getUserByEmail(email: string,) {
+     try {
+      return await db.user.findFirst({
+        where: {
+          email: email
+        },
+        omit: {
+          password: true
+        }
+      })
+    } catch (e: unknown) {
+      console.error(e)
+    }
+  }
 
-      return await db.user.create({ data: { email, name, cpf, password: await bun.password.hash(password) } });
+  static async postUsers({ email, password, name, cpf }: ) {
+    try {
+      return await db.user.create({
+        data: { email, name, cpf, password: await bun.password.hash(password) } ,
+        omit: { password: true }
+      });
     } catch (e: unknown) {
       console.error(e)
     }
@@ -41,6 +65,9 @@ export abstract class UserService {
         data: {
           cpf,
           name
+        },
+        omit: {
+          password: true
         }
       })
 
@@ -58,6 +85,9 @@ export abstract class UserService {
         },
         data: {
           deleted: true
+        },
+        omit: {
+          password: true
         }
       })
     } catch(e: unknown) {
