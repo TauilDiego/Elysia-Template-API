@@ -1,6 +1,7 @@
 import db from "../../utils/db"
 import * as bun from "bun";
-import { UserModel } from "./model";
+import { createUser, updateUserData } from "./model"
+import { Static } from "elysia";
 
 export abstract class UserService {
   static async getUsers() {
@@ -45,7 +46,7 @@ export abstract class UserService {
     }
   }
 
-  static async postUsers({ email, password, name, cpf }: ) {
+  static async postUsers({ email, password, name, cpf }: Static<typeof createUser>) {
     try {
       return await db.user.create({
         data: { email, name, cpf, password: await bun.password.hash(password) } ,
@@ -56,7 +57,7 @@ export abstract class UserService {
     }
   }
 
-  static async putUsers(id: string, { name, cpf }: UserModel.updateUserData) {
+  static async putUsers(id: string, { name, cpf }: Static<typeof updateUserData>) {
     try {
       return await db.user.update({
         where: {
