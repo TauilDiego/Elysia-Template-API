@@ -3,18 +3,13 @@ import { UserService } from "./service";
 import { UserModel } from "./model";
 
 const userRoutes = new Elysia({ prefix: '/users' })
+  .use(UserModel)
   .post("/", ({ body }) => UserService.postUsers(body), {
     detail: {
       tags: ['User']
     },
-    body: UserModel.createUser
+    body: "createUser"
   })
-  // .get("/", () => UserService.getUsers(), {
-  //   detail: {
-  //     tags: ['User']
-  //   },
-  //   encodeSchema: true
-  // })
   .get("/:id", ({ params: { id } }) => UserService.getUserById(id), {
     detail: {
       tags: ['User']
@@ -24,7 +19,7 @@ const userRoutes = new Elysia({ prefix: '/users' })
     detail: {
       tags: ['User']
     },
-    body: UserModel.updateUserData
+    body: "updateUserData"
   })
   .delete("/:id", ({ params: { id } }) => UserService.deleteUsers(id), {
     detail: {
