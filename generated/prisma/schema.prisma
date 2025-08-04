@@ -15,13 +15,16 @@ datasource db {
 }
 
 model User {
-  id          String      @id @default(uuid())
-  email       String      @unique
-  password    String
-  name        String?
-  authorities Authority[]
-  cpf         String?     @unique
-  deleted     Boolean     @default(false)
+  id           String      @id @default(uuid())
+  email        String      @unique
+  password     String
+  name         String?
+  authorities  Authority[]
+  cpf          String?     @unique
+  refreshToken String?
+  deleted      Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   // photos          Photo[]     @relation(name: "PhotoToUser")
 }
 

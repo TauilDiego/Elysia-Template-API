@@ -1,6 +1,6 @@
 import db from "../../utils/db"
 import * as bun from "bun";
-import { createUser, updateUserData } from "./model"
+import { createUser, updateUserData, UserModel } from "./model"
 import { Static } from "elysia";
 
 export abstract class UserService {
@@ -31,25 +31,26 @@ export abstract class UserService {
     }
   }
 
-  static async getUserByEmail(email: string,) {
-     try {
-      return await db.user.findFirst({
-        where: {
-          email: email
-        },
-        omit: {
-          password: true
-        }
-      })
-    } catch (e: unknown) {
-      console.error(e)
+  static async getUserByEmail(email: string, omitPassword: boolean = true) {
+    const user = await db.user.findFirst({
+      where: {
+        email: email
+      },
+      omit: {
+        password: omitPassword
+      },
+    })
+
+    if (!user?.id) {
+      throw new Error("User Not Found")
     }
+    return user
   }
 
   static async postUsers({ email, password, name, cpf }: Static<typeof createUser>) {
     try {
       return await db.user.create({
-        data: { email, name, cpf, password: await bun.password.hash(password) } ,
+        data: { email, name, cpf, password: await bun.password.hash(password) },
         omit: { password: true }
       });
     } catch (e: unknown) {
@@ -91,8 +92,23 @@ export abstract class UserService {
           password: true
         }
       })
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       console.error(e);
     }
+  }
+
+  static async updateToken(userId: string, refreshToken: string) {
+    const user = await db.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        refreshToken: refreshToken
+      }
+    })
+    if (user.refreshToken === refreshToken) {
+      return user
+    }
+    throw new Error("Erro ao atualizar o refreshToken")
   }
 }
