@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   cpf: 'cpf',
   refreshToken: 'refreshToken',
   deleted: 'deleted',
+  isOnline: 'isOnline',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

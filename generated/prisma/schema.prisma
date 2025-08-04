@@ -23,6 +23,7 @@ model User {
   cpf          String?     @unique
   refreshToken String?
   deleted      Boolean     @default(false)
+  isOnline     Boolean     @default(false)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   // photos          Photo[]     @relation(name: "PhotoToUser")

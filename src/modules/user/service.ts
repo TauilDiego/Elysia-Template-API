@@ -1,6 +1,6 @@
 import db from "../../utils/db"
 import * as bun from "bun";
-import { createUser, updateUserData, UserModel } from "./model"
+import { createUser, updateUserData } from "./model"
 import { Static } from "elysia";
 
 export abstract class UserService {
@@ -103,7 +103,8 @@ export abstract class UserService {
         id: userId
       },
       data: {
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        isOnline: true,
       }
     })
     if (user.refreshToken === refreshToken) {

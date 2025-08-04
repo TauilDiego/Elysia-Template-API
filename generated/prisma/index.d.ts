@@ -1039,6 +1039,7 @@ export namespace Prisma {
     cpf: string | null
     refreshToken: string | null
     deleted: boolean | null
+    isOnline: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1051,6 +1052,7 @@ export namespace Prisma {
     cpf: string | null
     refreshToken: string | null
     deleted: boolean | null
+    isOnline: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1063,6 +1065,7 @@ export namespace Prisma {
     cpf: number
     refreshToken: number
     deleted: number
+    isOnline: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1077,6 +1080,7 @@ export namespace Prisma {
     cpf?: true
     refreshToken?: true
     deleted?: true
+    isOnline?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1089,6 +1093,7 @@ export namespace Prisma {
     cpf?: true
     refreshToken?: true
     deleted?: true
+    isOnline?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1101,6 +1106,7 @@ export namespace Prisma {
     cpf?: true
     refreshToken?: true
     deleted?: true
+    isOnline?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1186,6 +1192,7 @@ export namespace Prisma {
     cpf: string | null
     refreshToken: string | null
     deleted: boolean
+    isOnline: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1215,6 +1222,7 @@ export namespace Prisma {
     cpf?: boolean
     refreshToken?: boolean
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorities?: boolean | User$authoritiesArgs<ExtArgs>
@@ -1229,6 +1237,7 @@ export namespace Prisma {
     cpf?: boolean
     refreshToken?: boolean
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1241,6 +1250,7 @@ export namespace Prisma {
     cpf?: boolean
     refreshToken?: boolean
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1253,11 +1263,12 @@ export namespace Prisma {
     cpf?: boolean
     refreshToken?: boolean
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "cpf" | "refreshToken" | "deleted" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "cpf" | "refreshToken" | "deleted" | "isOnline" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     authorities?: boolean | User$authoritiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1278,6 +1289,7 @@ export namespace Prisma {
       cpf: string | null
       refreshToken: string | null
       deleted: boolean
+      isOnline: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1711,6 +1723,7 @@ export namespace Prisma {
     readonly cpf: FieldRef<"User", 'String'>
     readonly refreshToken: FieldRef<"User", 'String'>
     readonly deleted: FieldRef<"User", 'Boolean'>
+    readonly isOnline: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -3230,6 +3243,7 @@ export namespace Prisma {
     cpf: 'cpf',
     refreshToken: 'refreshToken',
     deleted: 'deleted',
+    isOnline: 'isOnline',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3351,6 +3365,7 @@ export namespace Prisma {
     cpf?: StringNullableFilter<"User"> | string | null
     refreshToken?: StringNullableFilter<"User"> | string | null
     deleted?: BoolFilter<"User"> | boolean
+    isOnline?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     authorities?: AuthorityListRelationFilter
@@ -3364,6 +3379,7 @@ export namespace Prisma {
     cpf?: SortOrderInput | SortOrder
     refreshToken?: SortOrderInput | SortOrder
     deleted?: SortOrder
+    isOnline?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorities?: AuthorityOrderByRelationAggregateInput
@@ -3380,6 +3396,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     refreshToken?: StringNullableFilter<"User"> | string | null
     deleted?: BoolFilter<"User"> | boolean
+    isOnline?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     authorities?: AuthorityListRelationFilter
@@ -3393,6 +3410,7 @@ export namespace Prisma {
     cpf?: SortOrderInput | SortOrder
     refreshToken?: SortOrderInput | SortOrder
     deleted?: SortOrder
+    isOnline?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -3411,6 +3429,7 @@ export namespace Prisma {
     cpf?: StringNullableWithAggregatesFilter<"User"> | string | null
     refreshToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     deleted?: BoolWithAggregatesFilter<"User"> | boolean
+    isOnline?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -3465,6 +3484,7 @@ export namespace Prisma {
     cpf?: string | null
     refreshToken?: string | null
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     authorities?: AuthorityCreateNestedManyWithoutUsersInput
@@ -3478,6 +3498,7 @@ export namespace Prisma {
     cpf?: string | null
     refreshToken?: string | null
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     authorities?: AuthorityUncheckedCreateNestedManyWithoutUsersInput
@@ -3491,6 +3512,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorities?: AuthorityUpdateManyWithoutUsersNestedInput
@@ -3504,6 +3526,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorities?: AuthorityUncheckedUpdateManyWithoutUsersNestedInput
@@ -3517,6 +3540,7 @@ export namespace Prisma {
     cpf?: string | null
     refreshToken?: string | null
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3529,6 +3553,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3541,6 +3566,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3650,6 +3676,7 @@ export namespace Prisma {
     cpf?: SortOrder
     refreshToken?: SortOrder
     deleted?: SortOrder
+    isOnline?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3662,6 +3689,7 @@ export namespace Prisma {
     cpf?: SortOrder
     refreshToken?: SortOrder
     deleted?: SortOrder
+    isOnline?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3674,6 +3702,7 @@ export namespace Prisma {
     cpf?: SortOrder
     refreshToken?: SortOrder
     deleted?: SortOrder
+    isOnline?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4091,6 +4120,7 @@ export namespace Prisma {
     cpf?: string | null
     refreshToken?: string | null
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4103,6 +4133,7 @@ export namespace Prisma {
     cpf?: string | null
     refreshToken?: string | null
     deleted?: boolean
+    isOnline?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4139,6 +4170,7 @@ export namespace Prisma {
     cpf?: StringNullableFilter<"User"> | string | null
     refreshToken?: StringNullableFilter<"User"> | string | null
     deleted?: BoolFilter<"User"> | boolean
+    isOnline?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -4165,6 +4197,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4177,6 +4210,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4189,6 +4223,7 @@ export namespace Prisma {
     cpf?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     deleted?: BoolFieldUpdateOperationsInput | boolean
+    isOnline?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
