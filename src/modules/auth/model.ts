@@ -5,13 +5,24 @@ export const loginRequest = t.Object({
     password: t.String()
 })
 
+export const refreshRequest = t.Object({
+    refreshToken: t.String()
+})
+
 export const authResponse = t.Object({
     token: t.String(),
     refreshToken: t.String(),
 })
 
+export const tokenContent = t.Object({
+    id: t.String(),
+    iat: t.Number()
+})
+
 export const AuthModel = new Elysia()
 .model({
     loginRequest,
-    authResponse
+    authResponse,
+    refreshRequest,
+    tokenContent
 })

@@ -16,9 +16,9 @@ export abstract class UserService {
     }
   }
 
-  static async getUserById(id: string) {
+  static async getUserById(id?: string) {
     try {
-      return await db.user.findFirst({
+      return await db.user.findUnique({
         where: {
           id: id
         },
