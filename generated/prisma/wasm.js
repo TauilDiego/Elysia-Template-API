@@ -126,7 +126,11 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   cpf: 'cpf',
-  deleted: 'deleted'
+  refreshToken: 'refreshToken',
+  deleted: 'deleted',
+  isOnline: 'isOnline',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AuthorityScalarFieldEnum = {
