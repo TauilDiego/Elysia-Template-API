@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  password     String
+  name         String?
+  authorities  Authority[]
+  cpf          String?     @unique
+  refreshToken String?
+  deleted      Boolean     @default(false)
+  isOnline     Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  // photos          Photo[]     @relation(name: "PhotoToUser")
+}
+
+// model Photo {
+//   id                String    @id @default(uuid())
+//   bucket_id         String
+//   arq_filename      String
+//   arq_content_type  String
+//   arq_size          Int
+//   is_profile_photo  Boolean @default(false)
+//   user              User     @relation(name: "PhotoToUser", fields: [userId], references: [id])
+//   userId            String
+// }
+
+model Authority {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
