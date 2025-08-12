@@ -41,8 +41,9 @@ COPY --from=build /app/generated ./generated
 COPY --from=build /app/server server
 
 ENV NODE_ENV=production
-RUN bunx prisma migrate deploy  
 
-CMD ["./server" ]
+RUN bunx prisma migrate deploy
+
+CMD [ "./server" ]
 
 EXPOSE 3001
