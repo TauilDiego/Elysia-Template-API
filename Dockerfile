@@ -44,4 +44,4 @@ ENV NODE_ENV=production
 
 CMD ["/bin/sh", "-lc", "bunx prisma migrate deploy && ./server" ]
 
-EXPOSE 3000
+EXPOSE 3001
