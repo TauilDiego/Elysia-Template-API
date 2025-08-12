@@ -42,6 +42,6 @@ COPY --from=build /app/server server
 
 ENV NODE_ENV=production
 
-CMD ["/bin/sh", "-lc", "bunx prisma migrate deploy && bun ./server" ]
+CMD ["/bin/sh", "-lc", "bunx prisma migrate deploy && ./server" ]
 
 EXPOSE 3000
