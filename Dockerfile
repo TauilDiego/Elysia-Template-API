@@ -43,9 +43,6 @@ COPY --from=build /app/server server
 
 ENV NODE_ENV=production
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD [ "./server" ]
 
 EXPOSE 3001

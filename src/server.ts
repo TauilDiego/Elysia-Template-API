@@ -2,8 +2,6 @@ import { Elysia } from "elysia";
 import userRoutes from "./modules/user";
 import swagger from "@elysiajs/swagger";
 import authRoutes from "./modules/auth";
-import jwt from "@elysiajs/jwt";
-
 
 const app = new Elysia({
   prefix: "/api",
