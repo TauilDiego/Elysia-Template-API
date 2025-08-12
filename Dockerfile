@@ -35,7 +35,6 @@ RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /v
 
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/prisma ./prisma
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 COPY --from=build /app/server server
 
