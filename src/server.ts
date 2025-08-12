@@ -8,7 +8,7 @@ import jwt from "@elysiajs/jwt";
 const app = new Elysia({
   prefix: "/api",
   normalize: true
-}).get("/", () => "alive").listen(3000);
+}).get("/", () => "alive").listen(3001);
 
 app
   .use(swagger({
