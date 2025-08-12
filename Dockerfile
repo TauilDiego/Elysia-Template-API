@@ -34,6 +34,9 @@ WORKDIR /app
 
 RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/generated ./generated
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 COPY --from=build /app/server server
