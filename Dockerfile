@@ -18,7 +18,7 @@ RUN bun build \
 	--minify-syntax \
 	--target bun \
 	--outfile server \
-	./src/index.ts
+	./src/server.ts
 
 FROM gcr.io/distroless/base
 
