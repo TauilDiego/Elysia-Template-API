@@ -32,7 +32,7 @@ export abstract class UserService {
   }
 
   static async getUserByEmail(email: string, omitPassword: boolean = true) {
-    const user = await db.user.findFirst({
+    const user = await db.user.findUnique({
       where: {
         email: email
       },
