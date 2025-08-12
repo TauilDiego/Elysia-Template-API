@@ -34,4 +34,4 @@ app
   }))
   .group("/v1", (app) => app.use(userRoutes))
   .group("/v1", (app) => app.use(authRoutes))
-  .listen(process.env.PORT || 3000);
+  .listen(process.env.PORT || 3001);
