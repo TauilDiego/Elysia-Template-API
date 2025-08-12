@@ -15,6 +15,9 @@ COPY ./generated ./generated
 
 ENV NODE_ENV=production
 
+# Run migrations
+RUN bunx prisma generate 
+
 RUN bun build \
 	--compile \
 	--minify-whitespace \
