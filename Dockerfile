@@ -2,6 +2,8 @@ FROM oven/bun AS build
 
 WORKDIR /app
 
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
 # Cache packages installation
 COPY package.json package.json
 COPY bun.lock bun.lock
@@ -26,14 +28,20 @@ RUN bun build \
 	--outfile server \
 	./src/server.ts
 
-FROM gcr.io/distroless/base
+FROM oven/bun
 
 WORKDIR /app
+
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/generated ./generated
 
 COPY --from=build /app/server server
 
 ENV NODE_ENV=production
 
-CMD ["./server"]
+CMD ["/bin/sh", "-lc", "bunx prisma migrate deploy && bun ./server" ]
 
 EXPOSE 3000
