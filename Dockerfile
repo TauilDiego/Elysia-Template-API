@@ -9,6 +9,9 @@ COPY bun.lock bun.lock
 RUN bun install
 
 COPY ./src ./src
+COPY ./scripts ./scripts
+COPY ./prisma ./prisma
+COPY ./generated ./generated
 
 ENV NODE_ENV=production
 
