@@ -1,0 +1,9 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-api
+    ports:
+      - "3001:3001"
