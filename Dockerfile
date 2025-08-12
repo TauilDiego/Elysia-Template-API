@@ -41,6 +41,5 @@ COPY --from=build /app/server server
 
 ENV NODE_ENV=production
 
-CMD [ "./server" ]
-
 EXPOSE 3001
+CMD [ "./server" ]
