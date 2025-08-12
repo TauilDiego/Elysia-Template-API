@@ -5,5 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: auth-api
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - "3001:3001"
