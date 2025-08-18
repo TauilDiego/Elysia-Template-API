@@ -1,4 +1,4 @@
-import db from "../../utils/db"
+import db from "@/utils/db"
 import * as bun from "bun";
 import { createUser, updateUserData } from "./model"
 import { Static } from "elysia";

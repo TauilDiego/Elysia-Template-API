@@ -3,9 +3,9 @@ import { AuthModel } from "./model";
 import { AuthService } from "./service";
 import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
-import getExpTimestamp from "../../utils/getExpTimestamp";
-import { ACCESS_TOKEN_EXP, JWT_NAME, REFRESH_TOKEN_EXP } from "../../config/constant";
-import { Logger } from "../../utils/logger";
+import getExpTimestamp from "@/utils/getExpTimestamp";
+import { ACCESS_TOKEN_EXP, JWT_NAME, REFRESH_TOKEN_EXP } from "@/config/constant";
+import { Logger } from "@/utils/logger";
 
 
 
