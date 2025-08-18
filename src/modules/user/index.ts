@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { UserService } from "./service";
 import { UserModel } from "./model";
 import { AuthPlugin } from "../auth/plugin";
-import { Logger } from "src/utils/logger";
+import { Logger } from "../../utils/logger";
 
 const userRoutes = new Elysia({ prefix: '/users' })
   .use(AuthPlugin)

@@ -5,7 +5,7 @@ import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
 import getExpTimestamp from "../../utils/getExpTimestamp";
 import { ACCESS_TOKEN_EXP, JWT_NAME, REFRESH_TOKEN_EXP } from "../../config/constant";
-import { Logger } from "src/utils/logger";
+import { Logger } from "../../utils/logger";
 
 
 

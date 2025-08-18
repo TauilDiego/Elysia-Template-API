@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { Logger } from "src/utils/logger";
+import { Logger } from "../../utils/logger";;
 
 const publicRoutes = new Elysia()
     .decorate("logger", new Logger())
