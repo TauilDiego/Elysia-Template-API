@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import userRoutes from "./modules/user";
 import swagger from "@elysiajs/swagger";
 import authRoutes from "./modules/auth";
+import publicRoutes from "./modules/public";
 
 const app = new Elysia({
   prefix: "/api",
@@ -32,6 +33,7 @@ app
   }))
   .group("/v1", (app) => app.use(userRoutes))
   .group("/v1", (app) => app.use(authRoutes))
+  .group("/v1", (app) => app.use(publicRoutes))
   .listen(process.env.PORT || 3001);
 
 export type App = typeof app;
