@@ -13,6 +13,7 @@ RUN bun install
 COPY ./src ./src
 COPY ./scripts ./scripts
 COPY ./prisma ./prisma
+COPY ./tsconfig.json ./tsconfig.json
 
 ENV NODE_ENV=production
 
