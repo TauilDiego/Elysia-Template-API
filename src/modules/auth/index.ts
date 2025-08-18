@@ -5,6 +5,7 @@ import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
 import getExpTimestamp from "../../utils/getExpTimestamp";
 import { ACCESS_TOKEN_EXP, JWT_NAME, REFRESH_TOKEN_EXP } from "../../config/constant";
+import { Logger } from "src/utils/logger";
 
 
 
@@ -16,7 +17,9 @@ const authRoutes = new Elysia({ prefix: "auth" })
         })
     )
     .use(AuthModel)
-    .post("/sign-in", async ({ jwt, body, cookie: { acessToken, refreshToken } }) => {
+    .decorate("logger", new Logger())
+    .post("/sign-in", async ({ logger, jwt, body, cookie: { acessToken, refreshToken } }) => {
+        logger.log(body)
         try {   
             const currentUser = await UserService.getUserByEmail(body.email, false)
             const isPasswordMatched = await AuthService.verifyPassword(currentUser.password, body.password)
