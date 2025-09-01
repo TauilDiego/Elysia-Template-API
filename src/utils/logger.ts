@@ -1,5 +1,11 @@
 class Logger {
-    log(value: any) {
+    private logLevel: string;
+
+    constructor(logLevel: string = "info") {
+        this.logLevel = logLevel;
+    }
+
+    info(value: any) {
         console.log(value)
     }
 }

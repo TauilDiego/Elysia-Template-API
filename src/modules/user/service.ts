@@ -32,7 +32,7 @@ export abstract class UserService {
   }
 
   static async getUserByEmail(email: string, omitPassword: boolean = true) {
-    const user = await db.user.findUnique({
+    return await db.user.findUnique({
       where: {
         email: email
       },
@@ -40,11 +40,6 @@ export abstract class UserService {
         password: omitPassword
       },
     })
-
-    if (!user?.id) {
-      throw new Error("User Not Found")
-    }
-    return user
   }
 
   static async postUsers({ email, password, name, cpf }: Static<typeof createUser>) {

@@ -18,10 +18,15 @@ const authRoutes = new Elysia({ prefix: "auth" })
     )
     .use(AuthModel)
     .decorate("logger", new Logger())
-    .post("/sign-in", async ({ logger, jwt, body, cookie: { acessToken, refreshToken } }) => {
-        logger.log(body)
+    .post("/sign-in", async ({ set, logger, jwt, body, cookie: { acessToken, refreshToken } }) => {
         try {   
             const currentUser = await UserService.getUserByEmail(body.email, false)
+
+            if (!currentUser) {
+                set.status = 404
+                throw new Error("User not found")
+            }
+
             const isPasswordMatched = await AuthService.verifyPassword(currentUser.password, body.password)
             
             if (!currentUser || !isPasswordMatched) {
@@ -60,7 +65,9 @@ const authRoutes = new Elysia({ prefix: "auth" })
                 }
             }
         } catch(e) {
-            return e
+            return { 
+                message: e
+            }
         }
     }, {
         detail: { tags: ['Auth'] },
