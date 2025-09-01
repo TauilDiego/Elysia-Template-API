@@ -23,14 +23,15 @@ const authRoutes = new Elysia({ prefix: "auth" })
             const currentUser = await UserService.getUserByEmail(body.email, false)
 
             if (!currentUser) {
-                set.status = 404
+                set.status = 401
                 throw new Error("User not found")
             }
 
             const isPasswordMatched = await AuthService.verifyPassword(currentUser.password, body.password)
             
-            if (!currentUser || !isPasswordMatched) {
-                throw new Error("Invalid email or password");
+            if (!isPasswordMatched) {
+                set.status = 401
+                throw new Error("Invalid password");
             }
             
             const JWTToken = await jwt.sign({ 
@@ -65,8 +66,6 @@ const authRoutes = new Elysia({ prefix: "auth" })
                 }
             }
         } catch(e) {
-            console.log(e);
-            
             return { 
                 message: e
             }
