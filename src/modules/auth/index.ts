@@ -4,133 +4,147 @@ import { AuthService } from "./service";
 import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
 import getExpTimestamp from "@/utils/getExpTimestamp";
-import { ACCESS_TOKEN_EXP, JWT_NAME, REFRESH_TOKEN_EXP } from "@/config/constant";
+import {
+  ACCESS_TOKEN_EXP,
+  JWT_NAME,
+  REFRESH_TOKEN_EXP,
+} from "@/config/constant";
 import { Logger } from "@/utils/logger";
-
-
+import { ApiError } from "@/utils/error/ApiError";
 
 const authRoutes = new Elysia({ prefix: "auth" })
-    .use(
-        jwt({
-            name: JWT_NAME,
-            secret: process.env.JWT_SECRETS!
-        })
-    )
-    .use(AuthModel)
-    .decorate("logger", new Logger())
-    .post("/sign-in", async ({ set, logger, jwt, body, cookie: { acessToken, refreshToken } }) => {
-        try {   
-            const currentUser = await UserService.getUserByEmail(body.email, false)
-
-            if (!currentUser) {
-                set.status = 401
-                throw new Error("User not found")
-            }
-
-            const isPasswordMatched = await AuthService.verifyPassword(currentUser.password, body.password)
-            
-            if (!isPasswordMatched) {
-                set.status = 401
-                throw new Error("Invalid password");
-            }
-            
-            const JWTToken = await jwt.sign({ 
-                sub: currentUser.id,
-                exp: getExpTimestamp(ACCESS_TOKEN_EXP)
-            });
-            acessToken.set({
-                value: JWTToken,
-                httpOnly: true,
-                maxAge: ACCESS_TOKEN_EXP,
-                path: "/user"
-            })
-
-            const refreshJWTToken = await jwt.sign({ 
-                sub: currentUser.id,
-                exp: getExpTimestamp(REFRESH_TOKEN_EXP)
-            })
-            refreshToken.set({
-                value: refreshJWTToken,
-                httpOnly: true,
-                maxAge: REFRESH_TOKEN_EXP,
-                path: "/user"
-            })
-
-            await UserService.updateToken(currentUser.id, refreshJWTToken)
-
-            return {
-                message: "User logged successfully",
-                data: {
-                    accessToken: JWTToken,
-                    refreshToken: refreshJWTToken
-                }
-            }
-        } catch(e) {
-            return { 
-                message: e
-            }
-        }
-    }, {
-        detail: { tags: ['Auth'] },
-        body: 'loginRequest'
+  .use(
+    jwt({
+      name: JWT_NAME,
+      secret: process.env.JWT_SECRETS!,
     })
-    .post("sign-in/refresh", async ({jwt, set, cookie: { accessToken, refreshToken } }) => {
-        if (!refreshToken.value) {
-            set.status = "Unauthorized";
-            throw new Error("Refresh token is missing!")
-        }
+  )
+  .use(AuthModel)
+  .decorate("logger", new Logger())
+  .post(
+    "/sign-in",
+    async ({
+      set,
+      logger,
+      jwt,
+      body,
+      cookie: { acessToken, refreshToken },
+    }) => {
+      const currentUser = await UserService.getUserByEmail(body.email, false);
 
-        const jwtPayload = await jwt.verify(refreshToken.value)
+      if (!currentUser) {
+        set.status = 401;
+        throw new ApiError("User not found");
+      }
 
-        if (!jwtPayload) {
-            set.status = "Forbidden";
-            throw new Error("Refresh token is invalid!");
-        }
+      const isPasswordMatched = await AuthService.verifyPassword(
+        currentUser.password,
+        body.password
+      );
 
-        const userId = jwtPayload.sub;
-        const user = await UserService.getUserById(userId)
-        
-        if (!user) {
-            set.status = "Forbidden";
-            throw new Error("Refresh token is invalid")
-        }
+      if (!isPasswordMatched) {
+        set.status = 401;
+        throw new ApiError("Invalid password");
+      }
 
-        const accessJWTToken = await jwt.sign({
-            sub: user.id,
-            exp: getExpTimestamp(ACCESS_TOKEN_EXP)
-        })
+      const JWTToken = await jwt.sign({
+        sub: currentUser.id,
+        exp: getExpTimestamp(ACCESS_TOKEN_EXP),
+      });
+      acessToken.set({
+        value: JWTToken,
+        httpOnly: true,
+        maxAge: ACCESS_TOKEN_EXP,
+        path: "/user",
+      });
 
-        accessToken.set({
-            value: accessJWTToken,
-            httpOnly: true,
-            maxAge: ACCESS_TOKEN_EXP,
-            path: "/"
-        })
+      const refreshJWTToken = await jwt.sign({
+        sub: currentUser.id,
+        exp: getExpTimestamp(REFRESH_TOKEN_EXP),
+      });
+      refreshToken.set({
+        value: refreshJWTToken,
+        httpOnly: true,
+        maxAge: REFRESH_TOKEN_EXP,
+        path: "/user",
+      });
 
-        const refreshJWTToken = await jwt.sign({
-            sub: user.id,
-            exp: getExpTimestamp(REFRESH_TOKEN_EXP)
-        })
+      await UserService.updateToken(currentUser.id, refreshJWTToken);
 
-        refreshToken.set({
-            value: refreshJWTToken,
-            httpOnly: true,
-            maxAge: REFRESH_TOKEN_EXP,
-            path: "/"
-        })
+      return {
+        message: "User logged successfully",
+        data: {
+          accessToken: JWTToken,
+          refreshToken: refreshJWTToken,
+        },
+      };
+    },
+    {
+      detail: { tags: ["Auth"] },
+      body: "loginRequest",
+    }
+  )
+  .post(
+    "sign-in/refresh",
+    async ({ jwt, set, cookie: { accessToken, refreshToken } }) => {
+      if (!refreshToken.value) {
+        set.status = "Unauthorized";
+        throw new Error("Refresh token is missing!");
+      }
 
-        await UserService.updateToken(user.id, refreshJWTToken)
+      const jwtPayload = await jwt.verify(refreshToken.value);
 
-        return {
-            message: "Access token was re-generated successfully",
-            data: {
-                accessToken: accessJWTToken,
-                refreshToken: refreshJWTToken
-            }
-        }
-    }, {
-        detail: { tags: ['Auth'] },
-        body: 'refreshRequest'
-    })
+      if (!jwtPayload) {
+        set.status = "Forbidden";
+        throw new Error("Refresh token is invalid!");
+      }
+
+      const userId = jwtPayload.sub;
+      const user = await UserService.getUserById(userId);
+
+      if (!user) {
+        set.status = "Forbidden";
+        throw new Error("Refresh token is invalid");
+      }
+
+      const accessJWTToken = await jwt.sign({
+        sub: user.id,
+        exp: getExpTimestamp(ACCESS_TOKEN_EXP),
+      });
+
+      accessToken.set({
+        value: accessJWTToken,
+        httpOnly: true,
+        maxAge: ACCESS_TOKEN_EXP,
+        path: "/",
+      });
+
+      const refreshJWTToken = await jwt.sign({
+        sub: user.id,
+        exp: getExpTimestamp(REFRESH_TOKEN_EXP),
+      });
+
+      refreshToken.set({
+        value: refreshJWTToken,
+        httpOnly: true,
+        maxAge: REFRESH_TOKEN_EXP,
+        path: "/",
+      });
+
+      await UserService.updateToken(user.id, refreshJWTToken);
+
+      return {
+        message: "Access token was re-generated successfully",
+        data: {
+          accessToken: accessJWTToken,
+          refreshToken: refreshJWTToken,
+        },
+      };
+    },
+    {
+      detail: { tags: ["Auth"] },
+      body: "refreshRequest",
+    }
+  );
 
 export default authRoutes;

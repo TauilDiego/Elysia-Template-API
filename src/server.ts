@@ -3,34 +3,26 @@ import userRoutes from "./modules/user";
 import swagger from "@elysiajs/swagger";
 import authRoutes from "./modules/auth";
 import publicRoutes from "./modules/public";
+import { ApiError } from "./utils/error/ApiError";
+import swaggerConfig from "./utils/swagger.config";
 
 const app = new Elysia({
   prefix: "/api",
-  normalize: true
-}).get("/", () => "alive").listen(3001);
+  normalize: true,
+})
+  .get("/", () => "alive")
+  .listen(3001);
 
 app
-  .use(swagger({
-    documentation: {
-      info: {
-        title: 'API Documentation',
-        version: '1.0.0'
-      },
-      tags: [
-        { name: 'User', description: 'User endpoints' },
-        { name: 'Auth', description: 'Authentication endpoints' }
-      ],
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT'
-          }
-        }
-      }
+  .error({
+    ApiError
+  })
+  .onError(({ error, code }) => {
+    return {
+      error
     }
-  }))
+  })
+  .use(swagger(swaggerConfig))
   .group("/v1", (app) => app.use(userRoutes))
   .group("/v1", (app) => app.use(authRoutes))
   .group("/v1", (app) => app.use(publicRoutes))
