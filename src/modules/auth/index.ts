@@ -65,6 +65,8 @@ const authRoutes = new Elysia({ prefix: "auth" })
                 }
             }
         } catch(e) {
+            console.log(e);
+            
             return { 
                 message: e
             }
