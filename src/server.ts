@@ -1,9 +1,8 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import userRoutes from "./modules/user";
 import swagger from "@elysiajs/swagger";
 import authRoutes from "./modules/auth";
 import publicRoutes from "./modules/public";
-import { ApiError } from "./utils/error/ApiError";
 import swaggerConfig from "./utils/swagger.config";
 
 const encoder = new TextEncoder();
@@ -17,14 +16,6 @@ const app = new Elysia({
 
 app
   .use(swagger(swaggerConfig))
-  .error({
-    ApiError,
-  })
-  .onError(({ error, code }) => {
-    return {
-      error,
-    };
-  })
   .mapResponse(({ response, set }) => {
 
     const isJson = typeof response === "object";

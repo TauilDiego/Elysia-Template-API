@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { AuthModel, authResponse } from "./model";
+import { AuthModel } from "./model";
 import { AuthService } from "./service";
 import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
@@ -10,7 +10,7 @@ import {
   REFRESH_TOKEN_EXP,
 } from "@/config/constant";
 import { Logger } from "@/utils/logger";
-import { ApiError } from "@/utils/error/ApiError";
+import { AuthError } from "@/utils/error/ApiError";
 
 const authRoutes = new Elysia({ prefix: "auth" })
   .use(
@@ -35,7 +35,7 @@ const authRoutes = new Elysia({ prefix: "auth" })
 
       if (!currentUser) {
         set.status = 401;
-        throw new ApiError("User not found");
+        throw new AuthError("User not found");
       }
 
       const isPasswordMatched = await AuthService.verifyPassword(
@@ -45,7 +45,7 @@ const authRoutes = new Elysia({ prefix: "auth" })
 
       if (!isPasswordMatched) {
         set.status = 401;
-        throw new ApiError("Invalid password");
+        throw new AuthError("Invalid password");
       }
 
       const JWTToken = await jwt.sign({
@@ -87,7 +87,10 @@ const authRoutes = new Elysia({ prefix: "auth" })
   )
   .post(
     "sign-in/refresh",
-    async ({ jwt, set, cookie: { accessToken, refreshToken } }) => {
+    async ({ jwt, body, set, cookie: { accessToken, refreshToken } }) => {
+      
+      console.log(body);
+      
       if (!refreshToken.value) {
         set.status = "Unauthorized";
         throw new Error("Refresh token is missing!");
@@ -134,17 +137,17 @@ const authRoutes = new Elysia({ prefix: "auth" })
 
       await UserService.updateToken(user.id, refreshJWTToken);
 
-      return {
+      return AuthModel.models.authResponse.Encode({
         message: "Access token was re-generated successfully",
         data: {
-          accessToken: accessJWTToken,
+          token: accessJWTToken,
           refreshToken: refreshJWTToken,
         },
-      };
+      })
     },
     {
       detail: { tags: ["Auth"] },
-      body: "refreshRequest",
+      body: "refreshRequest"
     }
   );
 
