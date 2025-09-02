@@ -1,6 +1,6 @@
 import db from "@/utils/db"
 import * as bun from "bun";
-import { createUser, updateUserData } from "./model"
+import { createUser, updateUserData, UserModel } from "./model"
 import { Static } from "elysia";
 
 export abstract class UserService {
@@ -18,7 +18,7 @@ export abstract class UserService {
 
   static async getUserById(id?: string) {
     try {
-      return await db.user.findUnique({
+      const user = await db.user.findUnique({
         where: {
           id: id
         },
@@ -26,6 +26,9 @@ export abstract class UserService {
           password: true
         }
       })
+
+      return user
+      // return UserModel.models.user.Encode(user)
     } catch (e: unknown) {
       console.error(e)
     }

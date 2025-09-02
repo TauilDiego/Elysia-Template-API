@@ -10,8 +10,11 @@ export const refreshRequest = t.Object({
 })
 
 export const authResponse = t.Object({
-    token: t.String(),
-    refreshToken: t.String(),
+    message: t.String(),
+    data: t.Object({
+        token: t.String(),
+        refreshToken: t.String()
+    })
 })
 
 export const tokenContent = t.Object({

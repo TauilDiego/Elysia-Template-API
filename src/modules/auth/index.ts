@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { AuthModel } from "./model";
+import { AuthModel, authResponse } from "./model";
 import { AuthService } from "./service";
 import { UserService } from "../user/service";
 import jwt from "@elysiajs/jwt";
@@ -28,8 +28,9 @@ const authRoutes = new Elysia({ prefix: "auth" })
       logger,
       jwt,
       body,
-      cookie: { acessToken, refreshToken },
+      cookie: { accessToken, refreshToken },
     }) => {
+        
       const currentUser = await UserService.getUserByEmail(body.email, false);
 
       if (!currentUser) {
@@ -51,7 +52,7 @@ const authRoutes = new Elysia({ prefix: "auth" })
         sub: currentUser.id,
         exp: getExpTimestamp(ACCESS_TOKEN_EXP),
       });
-      acessToken.set({
+      accessToken.set({
         value: JWTToken,
         httpOnly: true,
         maxAge: ACCESS_TOKEN_EXP,
@@ -71,17 +72,17 @@ const authRoutes = new Elysia({ prefix: "auth" })
 
       await UserService.updateToken(currentUser.id, refreshJWTToken);
 
-      return {
+      return AuthModel.models.authResponse.Encode({
         message: "User logged successfully",
         data: {
-          accessToken: JWTToken,
+          token: JWTToken,
           refreshToken: refreshJWTToken,
         },
-      };
+      })
     },
     {
       detail: { tags: ["Auth"] },
-      body: "loginRequest",
+      body: "loginRequest"
     }
   )
   .post(
